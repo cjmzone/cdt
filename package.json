@@ -1,5 +1,5 @@
 {
-  "name": "CDT",
+  "name": "current-development-tools",
   "private": true,
   "scripts": {
     "build": "turbo build",
