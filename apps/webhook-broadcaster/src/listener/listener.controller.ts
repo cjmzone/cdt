@@ -31,8 +31,8 @@ export class ListenerController {
 
   @Get()
   @UseGuards(AuthGuard)
-  getListener(): Listener[] {
-    return this.listenerService.getAll();
+  async getListener(): Promise<Listener[]> {
+    return await this.listenerService.getAll();
   }
 
   @Delete()

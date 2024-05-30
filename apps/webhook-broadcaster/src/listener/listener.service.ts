@@ -1,22 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { Listener } from './listener.types';
+import { FirestoreService } from 'src/firestore/firestore.service';
 
 @Injectable()
 export class ListenerService {
   private listeners: Map<string, Listener> = new Map();
+  constructor(private readonly firestoreService: FirestoreService) {}
 
-  add(payload: string | string[]) {
+  async add(payload: string | string[]) {
+    console.log('Payload: ', payload, 'type: ', typeof payload);
     if (Array.isArray(payload)) {
-      payload.forEach((url) => {
-        this.listeners.set(url, { url });
-      });
+      this.firestoreService.addListener(payload);
     } else {
-      this.listeners.set(payload, { url: payload });
+      this.firestoreService.addListener(payload);
     }
   }
 
-  getAll(): Listener[] {
-    return Array.from(this.listeners.values());
+  async getAll(): Promise<Listener[]> {
+    return await this.firestoreService.getAllListeners();
   }
 
   delete(url: string) {

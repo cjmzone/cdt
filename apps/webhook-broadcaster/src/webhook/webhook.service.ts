@@ -19,7 +19,7 @@ export class WebhookService {
     headers: Record<string, string | string[]>;
     path: string;
   }) {
-    const registeredListeners = this.listenerService.getAll();
+    const registeredListeners = await this.listenerService.getAll();
     for (const listener of registeredListeners) {
       const targetUrl = listener.url + path;
       try {
