@@ -21,7 +21,6 @@ export class ListenerController {
   @UseGuards(AuthGuard)
   addListener(@Body() body: { urls: UrlInput[] }): void {
     const { urls } = body;
-    console.log('Postman urls: ', urls);
     if (urls && urls.length > 0) {
       const urlsArray = urls.map((item) => item.url);
       this.listenerService.add(urlsArray);
