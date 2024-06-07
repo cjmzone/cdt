@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { ConsoleLogger, Injectable, Logger } from '@nestjs/common';
 import * as admin from 'firebase-admin';
-import serviceAccount from 'C:/projects/credentials/current-dev-tools_serviceAccountKey.json';
+import serviceAccount from 'firestoreServiceAccountKey.json';
 import { Listener } from 'src/listener/listener.types';
 
 @Injectable()
@@ -45,7 +45,32 @@ export class FirestoreService {
     }
   }
 
-  async deleteListener(listener: string) {
-    // to do
+  async deleteListener(listenerToDelete: string) {
+    try {
+      const snapshot = await this.database
+        .collection('listeners')
+        .doc('urls')
+        .get();
+      if (!snapshot.exists) {
+        console.log('Document does not exist.');
+        return;
+      }
+      const listenersData = snapshot.data();
+      if (
+        !listenersData ||
+        !listenersData.urls ||
+        !Array.isArray(listenersData.urls)
+      ) {
+        console.log('Invalid document data');
+        return;
+      }
+      const updatedUrls = listenersData.urls.filter(
+        (url) => url !== listenerToDelete,
+      );
+      await snapshot.ref.update({ urls: updatedUrls });
+      console.log('Listener deleted.');
+    } catch (error) {
+      this.logger.error('Error deleting listener from Firestore', error);
+    }
   }
 }

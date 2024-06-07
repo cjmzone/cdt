@@ -20,7 +20,7 @@ export class ListenerService {
     return await this.firestoreService.getAllListeners();
   }
 
-  delete(url: string) {
-    this.listeners.delete(url);
+  async delete(url: string) {
+    return await this.firestoreService.deleteListener(url);
   }
 }
