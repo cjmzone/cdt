@@ -8,7 +8,6 @@ export class ListenerService {
   constructor(private readonly firestoreService: FirestoreService) {}
 
   async add(payload: string | string[]) {
-    console.log('Payload: ', payload, 'type: ', typeof payload);
     if (Array.isArray(payload)) {
       this.firestoreService.addListener(payload);
     } else {

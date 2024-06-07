@@ -56,11 +56,7 @@ export class FirestoreService {
         return;
       }
       const listenersData = snapshot.data();
-      if (
-        !listenersData ||
-        !listenersData.urls ||
-        !Array.isArray(listenersData.urls)
-      ) {
+      if (!Array.isArray(listenersData.urls)) {
         console.log('Invalid document data');
         return;
       }
