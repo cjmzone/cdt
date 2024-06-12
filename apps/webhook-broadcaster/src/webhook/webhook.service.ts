@@ -20,9 +20,10 @@ export class WebhookService {
     headers: Record<string, string | string[]>;
     path: string;
   }) {
-    const registeredListeners = await this.firestoreService.getAllListeners();
-    for (const listener of registeredListeners[0].urls) {
-      const targetUrl = listener + path;
+    const registeredListeners =
+      (await this.firestoreService.getAllListeners()) ?? [];
+    for (const listener of registeredListeners[0]?.urls) {
+      const targetUrl = `${listener}${path}`;
       try {
         await axios.post(targetUrl, data, {
           headers: {
