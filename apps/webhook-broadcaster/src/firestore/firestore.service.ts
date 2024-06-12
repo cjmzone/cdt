@@ -1,4 +1,4 @@
-import { ConsoleLogger, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import serviceAccount from 'firestoreServiceAccountKey.json';
 import { Listener } from 'src/listener/listener.types';

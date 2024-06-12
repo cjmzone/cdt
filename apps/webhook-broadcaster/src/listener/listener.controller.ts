@@ -37,7 +37,11 @@ export class ListenerController {
 
   @Delete()
   @UseGuards(AuthGuard)
-  deleteListener(@Body() body: Listener): void {
-    this.listenerService.delete(body.url);
+  deleteListener(@Body() body: { url: string }): void {
+    if (body.url) {
+      this.listenerService.delete(body.url);
+    } else {
+      throw new HttpException('URL not provided', HttpStatus.BAD_REQUEST);
+    }
   }
 }
