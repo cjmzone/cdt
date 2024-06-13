@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
-import { ListenerService } from '../listener/listener.service';
+import { FirestoreService } from 'src/firestore/firestore.service';
+import { Listener } from 'src/listener/listener.types';
 
 @Injectable()
 export class WebhookService {
   private readonly logger = new Logger(WebhookService.name);
-  constructor(private readonly listenerService: ListenerService) {}
+  constructor(private readonly firestoreService: FirestoreService) {}
 
   /**
    * Broadcasts a webhook to all registered listeners
@@ -19,11 +20,11 @@ export class WebhookService {
     headers: Record<string, string | string[]>;
     path: string;
   }) {
-    const registeredListeners = await this.listenerService.getAll();
-    for (const listener of registeredListeners) {
-      const targetUrl = listener.url + path;
+    const registeredListeners =
+      (await this.firestoreService.getAllListeners()) ?? [];
+    for (const listener of registeredListeners[0]?.urls) {
+      const targetUrl = `${listener}${path}`;
       try {
-        // proxy the request to the listener
         await axios.post(targetUrl, data, {
           headers: {
             ...headers,

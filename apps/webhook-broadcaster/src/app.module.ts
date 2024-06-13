@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ListenerModule } from './listener/listener.module';
 import { WebhookModule } from './webhook/webhook.module';
 import { HealthCheckModule } from './health-check/health-check.module';
-import { FirestoreService } from './firestore/firestore.service';
+import { FirestoreModule } from './firestore/firestore.module';
 
 @Module({
   imports: [
@@ -11,8 +11,7 @@ import { FirestoreService } from './firestore/firestore.service';
     ListenerModule,
     WebhookModule,
     HealthCheckModule,
+    FirestoreModule,
   ],
-  providers: [FirestoreService],
-  exports: [FirestoreService],
 })
 export class AppModule {}
