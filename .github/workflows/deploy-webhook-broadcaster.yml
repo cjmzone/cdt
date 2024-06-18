@@ -27,15 +27,21 @@ jobs:
         
       - name: Build and Archive Production Artifact
         run: |
-          cd apps/webhook-broadcaster
-          pnpm install
-          pnpm run build
-      
+        cd apps/webhook-broadcaster
+        pnpm install
+        pnpm run build
+
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: build
+          path: apps/webhook-broadcaster/dist 
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: apps/webhook-broadcaster/dist
 
   deploy:
     name: Deploy to Firebase Hosting
