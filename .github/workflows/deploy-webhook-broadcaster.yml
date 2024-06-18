@@ -31,7 +31,7 @@ jobs:
       - name: Build
         env:
           CI: false        
-        run: npm run build
+        run: pnpm run build
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
