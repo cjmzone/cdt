@@ -1,2 +1,44 @@
+# 1//06yRgMFVm5GVVCgYIARAAGAYSNwF-L9IrwpnsNsvLYZ18P7-jKwkTq6R9S_VKHOyEvNQIK_i1Vx6_fDzK2NNl54nEsC6deGeIq9Q
+
 # Example: firebase deploy --token "$FIREBASE_TOKEN"
-# 1//06d7sZEhmE6-DCgYIARAAGAYSNwF-L9Ir4uKf-q3A7sgy7JAroeoDzgZGg-OtiohKU11VRMR-jDkzQ90ggZO9KwL-RdTFzBBgmls
+
+name: Deploy to Firebase
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js and pnpm
+        uses: pnpm/setup-pnpm@v1
+        with:
+          node-version: '14'
+
+      - name: Install Firebase Tools
+        run: |
+          pnpm install -g firebase-tools
+
+      - name: Install dependencies
+        run: |
+          cd apps/webhook-broadcaster
+          pnpm install
+
+      - name: Build functions
+        run: |
+          cd apps/webhook-broadcaster
+          pnpm run build
+
+      - name: Deploy to Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd apps/webhook-broadcaster
+          pnpm run deploy --only functions
