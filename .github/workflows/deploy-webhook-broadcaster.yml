@@ -28,33 +28,28 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Build Web Application
-        run: |
-          cd apps/webhook-broadcaster
-          pnpm run build  # Adjust this command based on your build script
-
+      - name: Build
+        env:
+          CI: false        
+        run: npm run build
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: apps/webhook-broadcaster/build  # Path to your build output directory
-
+          path: build
   deploy:
-    name: Deploy to Firebase Hosting
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v2.3.2
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: build  # Path to download the artifact
-
-      - name: Deploy to Firebase Hosting
+          path: build
+      - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
