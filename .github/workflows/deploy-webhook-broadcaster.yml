@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
     name: Build and Deploy
@@ -10,15 +11,18 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: '8.15.4'
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 'v20.8.0'
           cache: 'pnpm'
+
       - name: Install Dependencies
         run: pnpm install
 
@@ -27,21 +31,15 @@ jobs:
         
       - name: Build and Archive Production Artifact
         run: |
-        cd apps/webhook-broadcaster
-        pnpm install
-        pnpm run build
+          cd apps/webhook-broadcaster
+          pnpm install
+          pnpm run build
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: apps/webhook-broadcaster/dist 
-
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: apps/webhook-broadcaster/dist
+          path: apps/webhook-broadcaster/dist  # Adjusted path to dist directory
 
   deploy:
     name: Deploy to Firebase Hosting
@@ -50,11 +48,12 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: ./build
+          path: apps/webhook-broadcaster/dist  # Adjusted path to dist directory
 
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@master
@@ -62,4 +61,3 @@ jobs:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
