@@ -3,19 +3,5 @@
     "predeploy": "pnpm --prefix \"$RESOURCE_DIR\" run build",
     "source": ".",
     "runtime": "nodejs20"
-  },
-  "hosting": {
-    "public": "dist/",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
   }
 }
