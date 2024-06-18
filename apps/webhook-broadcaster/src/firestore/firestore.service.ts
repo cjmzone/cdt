@@ -19,7 +19,7 @@ export class FirestoreService {
       }
       this.database = admin.firestore();
     } catch (error) {
-      this.logger.error('Error intializing Firestore', error);
+      this.logger.error('Error intializing Firestore ', error);
     }
   }
 
