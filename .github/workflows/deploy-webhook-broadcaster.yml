@@ -14,42 +14,36 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - steps:
-  - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: '6.32.9'
 
-  - name: Setup pnpm
-    uses: pnpm/action-setup@v2
-    with:
-      version: '6.32.9'
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'pnpm'
 
-  - name: Setup Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: '14'
-      cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
 
-  - name: Install Dependencies
-    run: pnpm install
+      - name: Run Tests
+        run: pnpm test
 
-  - name: Run Tests
-    run: pnpm test
-
-      - name: Install pnpm
-        run: |
-          npm install -g pnpm@latest
-          export PATH=$PATH:$(npm bin -g)
-
-      - name: Install Dependencies and Build
+      - name: Build and Archive Production Artifact
         run: |
           cd apps/webhook-broadcaster
           pnpm install
           pnpm run build
+          mkdir -p ../build
+          cp -r dist ../build
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: C:\projects\personal\current-development-tools_test\apps\webhook-broadcaster\build
+          path: ./build
 
   deploy:
     name: Deploy to Firebase Hosting
@@ -64,7 +58,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: C:\projects\personal\current-development-tools_test\apps\webhook-broadcaster\build
+          path: ./build
 
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@master
