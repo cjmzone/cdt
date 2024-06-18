@@ -27,7 +27,9 @@ jobs:
       - name: Build
         env:
           CI: false
-        run: pnpm run build
+        run: |
+        cd C:\projects\personal\current-development-tools_test\apps\webhook-broadcaster\build
+        pnpm run build
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
