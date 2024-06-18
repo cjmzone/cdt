@@ -1,44 +1,41 @@
-# 1//06yRgMFVm5GVVCgYIARAAGAYSNwF-L9IrwpnsNsvLYZ18P7-jKwkTq6R9S_VKHOyEvNQIK_i1Vx6_fDzK2NNl54nEsC6deGeIq9Q
-
-# Example: firebase deploy --token "$FIREBASE_TOKEN"
-
-name: Deploy to Firebase
-
+name: Firebase Deployment
 on:
   push:
     branches:
       - main
-
 jobs:
-  build-and-deploy:
+  build:
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js and pnpm
-        uses: pnpm/setup-pnpm@v1
+      - name: Checkout Repo
+        uses: actions/checkout@v2.3.2
+      - name: Install Dependencies
+        run: pnpm install      
+      - name: Build
+        env:
+          CI: false        
+        run: pnpm run build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v2
         with:
-          node-version: '14'
-
-      - name: Install Firebase Tools
-        run: |
-          pnpm install -g firebase-tools
-
-      - name: Install dependencies
-        run: |
-          cd apps/webhook-broadcaster
-          pnpm install
-
-      - name: Build functions
-        run: |
-          cd apps/webhook-broadcaster
-          pnpm run build
-
+          name: build
+          path: build
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2.3.2
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
       - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: |
-          cd apps/webhook-broadcaster
-          pnpm run deploy --only functions
