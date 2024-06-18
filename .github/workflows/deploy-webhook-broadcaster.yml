@@ -1,8 +1,10 @@
 name: Firebase Deployment
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     name: Build
@@ -10,17 +12,29 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2.3.2
+      
+      - name: Setup Node.js and pnpm
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'pnpm'
+
       - name: Install Dependencies
-        run: pnpm install     
+        run: |
+          npm install -g pnpm
+          pnpm install
+
       - name: Build
         env:
-          CI: false        
+          CI: false
         run: pnpm run build
+
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
           path: build
+
   deploy:
     name: Deploy
     needs: build
@@ -28,12 +42,14 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2.3.2
+
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
           name: build
           path: build
-      - name: Deploy to Firebase
+
+      - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
