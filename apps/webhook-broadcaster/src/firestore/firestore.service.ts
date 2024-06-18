@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as admin from 'firebase-admin';
-import serviceAccount from 'firestoreServiceAccountKey.json';
+import serviceAccount from 'newServiceKey.json';
 import { Listener } from 'src/listener/listener.types';
 
 @Injectable()
