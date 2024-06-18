@@ -7,49 +7,54 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build and Deploy
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2.3.2
-      
+        uses: actions/checkout@v2
+
       - name: Setup Node.js and pnpm
         uses: actions/setup-node@v2
         with:
           node-version: '14'
           cache: 'pnpm'
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install Dependencies
         run: |
-          npm install -g pnpm
+          cd apps/webhook-broadcaster
           pnpm install
 
       - name: Build
         env:
           CI: false
         run: |
-        cd C:\projects\personal\current-development-tools_test\apps\webhook-broadcaster\build
-        pnpm run build
+          cd apps/webhook-broadcaster
+          pnpm run build
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: build
+          path: C:\projects\personal\current-development-tools_test\apps\webhook-broadcaster\build
 
   deploy:
-    name: Deploy
+    name: Deploy to Firebase Hosting
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2.3.2
+        uses: actions/checkout@v2
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: build
+          path: C:\projects\personal\current-development-tools_test\apps\webhook-broadcaster\build
 
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@master
