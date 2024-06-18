@@ -41,7 +41,7 @@ export class ListenerController {
     if (body.url) {
       this.listenerService.delete(body.url);
     } else {
-      throw new HttpException('URL not provided', HttpStatus.BAD_REQUEST);
+      throw new HttpException('URL not provided ', HttpStatus.BAD_REQUEST);
     }
   }
 }
