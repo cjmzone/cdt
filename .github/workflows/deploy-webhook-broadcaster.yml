@@ -1,4 +1,5 @@
 name: Firebase Deployment
+
 on:
   push:
     branches:
@@ -8,6 +9,7 @@ jobs:
   build:
     name: Build and Deploy
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -29,7 +31,7 @@ jobs:
       - name: Install Nest CLI
         run: pnpm install --global @nestjs/cli
         
-      - name: Build and Archive Production Artifact
+      - name: Build
         run: |
           cd apps/webhook-broadcaster
           pnpm install
@@ -39,12 +41,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: apps/webhook-broadcaster/dist  # Adjusted path to dist directory
+          path: apps/webhook-broadcaster/dist 
 
   deploy:
     name: Deploy to Firebase Hosting
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -53,11 +56,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: apps/webhook-broadcaster/dist 
+          path: apps/webhook-broadcaster/dist
 
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
