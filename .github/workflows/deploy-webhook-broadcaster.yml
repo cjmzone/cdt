@@ -21,7 +21,10 @@ jobs:
           cache: 'pnpm'
       - name: Install Dependencies
         run: pnpm install
-      
+
+      - name: Install Nest CLI
+        run: pnpm install --global @nestjs/cli
+        
       - name: Build and Archive Production Artifact
         run: |
           cd apps/webhook-broadcaster
@@ -33,7 +36,7 @@ jobs:
         with:
           name: build
           path: build
-          
+
   deploy:
     name: Deploy to Firebase Hosting
     needs: build
