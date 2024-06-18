@@ -22,28 +22,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 'v20.8.0'
+          node-version: '14'
           cache: 'pnpm'
 
       - name: Install Dependencies
         run: pnpm install
 
-      # - name: Run Tests
-      #   run: pnpm test
-
-      # - name: Build and Archive Production Artifact
-      #   run: |
-      #     cd apps/webhook-broadcaster
-      #     pnpm install
-      #     pnpm run build
-      #     mkdir -p ../build
-      #     cp -r dist ../build
+      - name: Build Web Application
+        run: |
+          cd apps/webhook-broadcaster
+          pnpm run build  # Adjust this command based on your build script
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: ./build
+          path: apps/webhook-broadcaster/build  # Path to your build output directory
 
   deploy:
     name: Deploy to Firebase Hosting
@@ -58,7 +52,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: build
+          path: build  # Path to download the artifact
 
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@master
