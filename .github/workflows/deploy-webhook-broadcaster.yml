@@ -21,18 +21,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        run: |
+          npm install -g pnpm@latest
+          export PATH=$PATH:$(npm bin -g)
 
-      - name: Install Dependencies
+      - name: Install Dependencies and Build
         run: |
           cd apps/webhook-broadcaster
           pnpm install
-
-      - name: Build
-        env:
-          CI: false
-        run: |
-          cd apps/webhook-broadcaster
           pnpm run build
 
       - name: Archive Production Artifact
