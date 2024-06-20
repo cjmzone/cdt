@@ -11,5 +11,5 @@ import { FirestoreModule } from '../firestore/firestore.module';
   exports: [ListenerService],
 })
 export class ListenerModule {
-  /*  empty  */
+  /*  empty   */
 }
