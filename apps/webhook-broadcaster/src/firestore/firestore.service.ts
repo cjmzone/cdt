@@ -27,7 +27,7 @@ export class FirestoreService {
     try {
       const listenerDoc = { urls: listener };
       await this.database.collection('listeners').doc('urls').set(listenerDoc);
-      console.log(listener, 'successfully  written!');
+      console.log(listener, 'successfully written!');
     } catch (error) {
       this.logger.error('Error adding listener to Firestore', error);
     }
