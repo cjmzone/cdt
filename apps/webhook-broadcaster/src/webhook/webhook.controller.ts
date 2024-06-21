@@ -1,4 +1,4 @@
-import { Controller, Logger, Param, Post, Req } from '@nestjs/common';
+import { Controller, Logger, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { WebhookService } from './webhook.service';
 
