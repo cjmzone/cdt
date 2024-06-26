@@ -1,7 +1,19 @@
 {
-  "functions": {
-    "predeploy": "pnpm --prefix \"$RESOURCE_DIR\" run build",
-    "source": ".",
-    "runtime": "nodejs20"
-  }
+  "functions": [
+    {
+      "source": ".",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "pnpm --prefix \"$RESOURCE_DIR\" run lint",
+        "pnpm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
 }

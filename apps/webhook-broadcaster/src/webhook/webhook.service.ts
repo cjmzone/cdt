@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import { FirestoreService } from 'src/firestore/firestore.service';
-import { Listener } from 'src/listener/listener.types';
 
 @Injectable()
 export class WebhookService {

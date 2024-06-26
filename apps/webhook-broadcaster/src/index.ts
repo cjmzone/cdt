@@ -3,20 +3,20 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 import * as functions from 'firebase-functions';
 import { AppModule } from './app.module';
-const {
+import {
   initializeApp,
-  applicationDefault,
-  cert,
-} = require('firebase-admin/app');
-const {
-  getFirestore,
-  Timestamp,
-  FieldValue,
-  Filter,
-} = require('firebase-admin/firestore');
+  // applicationDefault,
+  // cert,
+} from 'firebase-admin/app';
+// const {
+//   getFirestore,
+//   Timestamp,
+//   FieldValue,
+//   Filter,
+// } = require('firebase-admin/firestore');
 
 initializeApp();
-const db = getFirestore();
+// const db = getFirestore();
 const expressServer = express();
 const createFunction = async (expressInstance): Promise<void> => {
   const app = await NestFactory.create(
