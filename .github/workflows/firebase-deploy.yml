@@ -1,76 +1,9 @@
-# name: Firebase Deployment
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     name: Build and Deploy
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout Repo
-#         uses: actions/checkout@v2
-
-#       - name: Setup pnpm
-#         uses: pnpm/action-setup@v2
-#         with:
-#           version: '8.15.4'
-
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: 'v20.8.0'
-#           cache: 'pnpm'
-
-#       - name: Install Dependencies
-#         run: pnpm install
-
-#       - name: Install Nest CLI
-#         run: pnpm install --global @nestjs/cli
-
-#       - name: Build
-#         run: |
-#           cd apps/webhook-broadcaster
-#           pnpm install
-#           pnpm run build
-
-#       - name: Archive Production Artifact
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: build
-#           path: apps/webhook-broadcaster/dist
-
-#   deploy:
-#     name: Deploy to Firebase Hosting
-#     needs: build
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout Repo
-#         uses: actions/checkout@v2
-
-#       - name: Download Artifact
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: build
-#           path: apps/webhook-broadcaster/dist
-
-#       - name: Deploy to Firebase Hosting
-#         uses: w9jds/firebase-action@master
-#         with:
-#           args: deploy --only hosting
-#         env:
-#           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
 name: Firebase Deployment
 
 on:
   push:
     branches:
-      - main
+      - cur-1428-resolved-lockfile
 
 jobs:
   build:
@@ -131,4 +64,5 @@ jobs:
       - name: Deploy to Firebase Hosting
         run: firebase deploy --only hosting
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_WEBHOOK_BROADCASTER }}
+
