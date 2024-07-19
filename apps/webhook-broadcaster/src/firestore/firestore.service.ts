@@ -41,7 +41,7 @@ export class FirestoreService {
       );
       return listeners;
     } catch (error) {
-      this.logger.error('Error getting listeners from Firestore', error);
+      this.logger.error('Error getting listeners from Firestore ', error);
     }
   }
 
