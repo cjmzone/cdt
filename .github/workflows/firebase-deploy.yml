@@ -59,7 +59,7 @@ jobs:
           path: apps/webhook-broadcaster/dist
 
       - name: Install Firebase CLI
-        run: pnpm install -g firebase-tools
+        run: npm install -g firebase-tools
 
       - name: Deploy to Firebase Hosting
         run: |
