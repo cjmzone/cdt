@@ -64,10 +64,16 @@ jobs:
       - name: Authenticate with Firebase
         run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_WEBHOOK_BROADCASTER }}" > $HOME/firebase-key.json
 
-      - name: Deploy to Firebase Hosting
+      - name: Set Firebase Credentials
         run: |
-          cd apps/webhook-broadcaster
-          firebase deploy "$(firebase login:ci --no-localhost --json < $HOME/firebase-key.json | jq -r .ci_token)"
+          gcloud auth activate-service-account --key-file=$HOME/firebase-key.json
+          gcloud config set project webhook-broadcaster
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-key.json
 
+      - name: Deploy to Firebase Hosting
+        run: |
+          cd apps/webhook-broadcaster
+          firebase deploy --project webhook-broadcaster
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-key.json
