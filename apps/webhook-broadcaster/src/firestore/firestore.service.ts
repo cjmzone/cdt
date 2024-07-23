@@ -64,7 +64,7 @@ export class FirestoreService {
         (url) => url !== listenerToDelete,
       );
       await snapshot.ref.update({ urls: updatedUrls });
-      console.log('Listener deleted.');
+      console.log('Listener deleted. ');
     } catch (error) {
       this.logger.error('Error deleting listener from Firestore ', error);
     }
