@@ -67,7 +67,7 @@ jobs:
       - name: Deploy to Firebase Hosting
         run: |
           cd apps/webhook-broadcaster
-          firebase deploy --token "$(firebase login:ci --no-localhost --json < $HOME/firebase-key.json | jq -r .ci_token)"
+          firebase deploy "$(firebase login:ci --no-localhost --json < $HOME/firebase-key.json | jq -r .ci_token)"
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-key.json
 
