@@ -58,12 +58,18 @@ jobs:
           name: build
           path: apps/webhook-broadcaster/dist
 
+      - name: Create GOOGLE_APPLICATION_CREDENTIALS file
+        run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > $GITHUB_WORKSPACE/firestoreServiceAccountKey.json
+
+      - name: Export GOOGLE_APPLICATION_CREDENTIALS
+        run: echo "GOOGLE_APPLICATION_CREDENTIALS=$GITHUB_WORKSPACE/firestoreServiceAccountKey.json" >> $GITHUB_ENV
+
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
       - name: Deploy to Firebase Hosting
         run: |
           cd apps/webhook-broadcaster
-          firebase deploy --project webhook-broadcaster
+          firebase deploy --only hosting
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/firestoreServiceAccountKey.json
