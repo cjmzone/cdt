@@ -64,6 +64,6 @@ jobs:
       - name: Deploy to Firebase Hosting
         run: |
           cd apps/webhook-broadcaster
-          firebase deploy --only hosting
+          firebase deploy --project webhook-broadcaster
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_WEBHOOK_BROADCASTER }}
