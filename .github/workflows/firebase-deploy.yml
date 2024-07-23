@@ -66,4 +66,4 @@ jobs:
           cd apps/webhook-broadcaster
           firebase deploy --project webhook-broadcaster
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_WEBHOOK_BROADCASTER }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
